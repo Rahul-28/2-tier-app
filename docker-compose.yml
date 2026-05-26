@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./back-end
+    container_name: notes-backend
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+    expose:
+      - 5000
+    healthcheck:
+      test: ["CMD", "wget"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./front-end
+    container_name: notes-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    
+
+
