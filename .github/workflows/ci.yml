@@ -43,7 +43,7 @@ jobs:
             - name: Setup Node
               uses: actions/setup-node@v4
               with:
-                node-versionn: 20
+                node-version: 20
                 cache: npm
                 cache-dependency-path: fronnt-end/package-lock.json
             
