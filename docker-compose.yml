@@ -1,14 +1,13 @@
 services:
   backend:
-    build: 
-      context: ./backend
+    build: ./back-end
     container_name: notes-backend
     command: npm start
     restart: unless-stopped
     networks:
       - 2tier-app
     volumes:
-      - ./backend/src:/app/src
+      - ./back-end/src:/app/src
     ports:
       - "5000:5000"
     healthcheck:
@@ -18,18 +17,21 @@ services:
       retries: 3
 
   frontend:
-    build: 
-      context: ./frontend
+    build: ./front-end
     container_name: notes-frontend
+    # command: npm start  commenting this so nginx can start the frontend not npm
     restart: unless-stopped
     networks:
       - 2tier-app
+    volumes:
+      - ./front-end/src:/app/src
+      - ./front-end/public:/app/public
     ports:
-      - "80:80"
+      - "3000:3000"
     depends_on:
       backend:
         condition: service_healthy
 
-networks:
-  2tier-app:
-    driver: bridge
+  networks:
+    2tier-app:
+      driver: bridge  
